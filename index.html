@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Portifólio</title>
+        <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+            integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
+            crossorigin="anonymous"
+        />
+        <link
+            href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital@0;1&display=swap"
+            rel="stylesheet"
+        />
+        <style>
+            :root {
+                --white: #fffafa;
+                --gray: #dedede;
+                --black: #333333;
+            }
+            body {
+                background-color: var(--gray);
+                color: var(--black);
+                font-family: "Noto Sans", sans-serif;
+            }
+            @media (prefers-color-scheme: dark) {
+                body {
+                    background-color: var(--black);
+                    color: var(--white);
+                }
+            }
+            #content {
+                display: grid;
+                grid-template-columns: repeat(auto-fill, 1fr);
+            }
+        </style>
+    </head>
+    <body>
+        <main>
+            <header>
+                <figure>
+                    <img
+                        src="https://i.picsum.photos/id/723/200/200.jpg"
+                        alt="I'ts me, Bruno!"
+                    />
+                    <figcaption>
+                        <div itemscope itemtype="http://schema.org/Person">
+                            Hi, I'm hilt! 🦗 a.k.a.
+                            <div itemprop="name">Bruno Ochotorena</div>
+                            <div>
+                                <em>
+                                    The Computer Scientist
+                                </em>
+                                <span>&#x1F468;&#x200D;&#x1F4BB;</span>
+                            </div>
+                        </div>
+                    </figcaption>
+                </figure>
+            </header>
+
+            <!-- <aside>
+                <nav></nav>
+            </aside> -->
+
+            <div id="content"></div>
+
+            <template id="card">
+                <style>
+                    ul {
+                        list-style-type: none;
+                    }
+                </style>
+                <ul>
+                    <slot></slot>
+                </ul>
+            </template>
+            <footer>
+                Made by me sandhilt 2020 &copy;
+            </footer>
+        </main>
+        <script>
+            (async function () {
+                /** @param {Array<string>} data */
+                function createCard(data) {
+                    const card = document.createElement("m-card");
+                    for (const item of data) {
+                        const el = document.createElement("li");
+                        el.textContent = item;
+                        card.appendChild(el);
+                    }
+                    return card;
+                }
+
+                /** @param {string} name */
+                async function getSubject(name) {
+                    try {
+                        const response = await fetch(`${name}.json`);
+                        if (response.ok) {
+                            const obj = await response.json();
+                            return obj;
+                        } else {
+                            throw new Error(response.statusText);
+                        }
+                    } catch (err) {
+                        console.log(err);
+                        return [];
+                    }
+                }
+
+                /** @param {string[]} arr */
+                function* getSubjects(arr) {
+                    for (const item of arr) {
+                        yield getSubject(item);
+                    }
+                }
+
+                class Card extends HTMLElement {
+                    constructor() {
+                        super();
+                        /** @type {HTMLTemplateElement} */
+                        const { content } = document.querySelector(
+                            "template#card"
+                        );
+                        this.shadow = this.attachShadow({ mode: "open" });
+                        this.shadow.appendChild(content.cloneNode(true));
+                        /** @type {?IntersectionObserver}*/
+                        this.observe = null;
+                        this.show = false;
+                    }
+
+                    /** @param {IntersectionObserverEntry[]} entries
+                     *  @param  {IntersectionObserver} observe
+                     */
+                    handleIntersect(entries, observe) {
+                        entries.forEach(
+                            ({
+                                intersectionRatio: ratio,
+                                isIntersecting: inter,
+                            }) => {
+                                // console.log(ratio, inter);
+                                if (inter && !this.show) {
+                                    this.show = true;
+                                    this.animate(
+                                        [{ opacity: 0 }, { opacity: 1 }],
+                                        {
+                                            duration: 4000,
+                                        }
+                                    );
+                                }
+                                if (ratio >= 3 / 4) {
+                                    observe.disconnect();
+                                    const { value: next, done } = gen.next();
+                                    if (!done) {
+                                        next.then((value) => {
+                                            content.appendChild(
+                                                createCard(value)
+                                            );
+                                        });
+                                    }
+                                }
+                            }
+                        );
+                    }
+
+                    /** @param {number} numSteps */
+                    static buildThresholdList(numSteps = 0) {
+                        const thresholds = [];
+                        for (let i = 1; i <= numSteps; i++) {
+                            const ratio = i / numSteps;
+                            thresholds.push(ratio);
+                        }
+                        thresholds.unshift(0);
+                        return thresholds;
+                    }
+
+                    connectedCallback() {
+                        this.observe = new IntersectionObserver(
+                            this.handleIntersect.bind(this),
+                            {
+                                root: null,
+                                rootMargin: "0px",
+                                threshold: Card.buildThresholdList(4),
+                            }
+                        );
+                        this.observe.observe(this);
+                    }
+                }
+
+                customElements.define("m-card", Card);
+
+                const gen = getSubjects(["frontend", "backend", "other"]);
+
+                const content = document.getElementById("content");
+                const first = await gen.next().value;
+                const cards = createCard(first);
+                content.appendChild(cards);
+            })();
+        </script>
+    </body>
+</html>
