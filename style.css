@@ -1,0 +1,20 @@
+:root {
+  --white: #fffafa;
+  --gray: #dedede;
+  --black: #333333;
+}
+body {
+  background-color: var(--gray);
+  color: var(--black);
+  font-family: "Noto Sans", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--black);
+    color: var(--white);
+  }
+}
+#content {
+  display: grid;
+  grid-template-rows: repeat(3, 1fr);
+}

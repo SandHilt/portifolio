@@ -10,5 +10,6 @@
     "Promise",
     "Async/Await",
     "Intersection Obsever",
-    "Microformats"
+    "Microformats",
+    "Function generator"
 ]
