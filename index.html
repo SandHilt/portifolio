@@ -1,64 +1,67 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Portifólio</title>
-        <link
-            rel="stylesheet"
-            href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
-            integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
-            crossorigin="anonymous"
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital@0;1&display=swap"
-            rel="stylesheet"
-        />
-        <link rel="stylesheet" href="style.css" />
-    </head>
-    <body>
-        <main>
-            <header>
-                <figure>
-                    <img
-                        src="https://i.picsum.photos/id/723/200/200.jpg"
-                        alt="I'ts me, Bruno!"
-                    />
-                    <figcaption>
-                        <div itemscope itemtype="http://schema.org/Person">
-                            Hi, I'm hilt! 🦗 a.k.a.
-                            <div itemprop="name">Bruno Ochotorena</div>
-                            <div>
-                                <em>
-                                    The Computer Scientist
-                                </em>
-                                <span>&#x1F468;&#x200D;&#x1F4BB;</span>
-                            </div>
-                        </div>
-                    </figcaption>
-                </figure>
-            </header>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portifolio</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
+      integrity="sha256-l85OmPOjvil/SOvVt3HnSSjzF1TUMyT9eV0c2BzEGzU="
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital@0;1&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <script async type="module" src="main.js"></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <figure>
+          <img
+            loading="lazy"
+            width="200"
+            height="200"
+            src="723-200x200.jpg"
+            alt="I'ts me, Bruno!"
+          />
+          <figcaption>
+            <div itemscope itemtype="http://schema.org/Person">
+              Hi, I'm hilt! 🦗 a.k.a.
+              <div itemprop="name">Bruno Ochotorena</div>
+              <div>
+                <em>
+                  The Computer Scientist
+                </em>
+                <span>&#x1F468;&#x200D;&#x1F4BB;</span>
+              </div>
+            </div>
+          </figcaption>
+        </figure>
+      </header>
 
-            <!-- <aside>
+      <!-- <aside>
                 <nav></nav>
             </aside> -->
 
-            <div id="content"></div>
+      <div id="content"></div>
 
-            <template id="card">
-                <style>
-                    ul {
-                        list-style-type: none;
-                    }
-                </style>
-                <ul>
-                    <slot></slot>
-                </ul>
-            </template>
-            <footer>
-                Made by me sandhilt 2020 &copy;
-            </footer>
-        </main>
-        <script src="main.js"></script>
-    </body>
+      <template id="card">
+        <style>
+          ul {
+            list-style-type: none;
+          }
+        </style>
+        <ul>
+          <slot></slot>
+        </ul>
+      </template>
+      <footer>
+        Made by me sandhilt 2020 &copy;
+      </footer>
+    </main>
+  </body>
 </html>
