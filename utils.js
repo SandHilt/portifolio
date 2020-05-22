@@ -35,10 +35,8 @@ async function getSubject(name) {
  * @returns {AsyncGenerator<Array<string>, void, unknown>}
  */
 export async function* getSubjects(arr) {
-  const cache = arr.map(getSubject);
-
   try {
-    for await (const item of cache) {
+    for await (const item of arr.map(getSubject)) {
       yield item;
     }
   } catch (err) {
